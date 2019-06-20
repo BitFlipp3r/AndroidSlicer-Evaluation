@@ -42,65 +42,6 @@ Der Android-Slicer nutzt eine MongoDB-Datenbank. Beim Start der Applikation wird
 
         mongod --dbpath=C:\folder\to\databases\data\db
 
-# Einbindung der Android-Ressourcen
-Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services als auch zur Rekonstruktion des Quellcodes während des Slicing-Prozesses die Java-Quelldateien der entsprechenden Klassen. Die Berechnung der Slices mittels WALA erfolgt dagegen auf Binärebene, sodass zusätzlich die kompilierten .class-Dateien innerhalb einer android.jar-Datei bereitgestellt werden müssen.  Diese sind für das API-Level 28 (Android 9) im Ordner 
-
-    /android-resources/android-29
-
-bereitgestellt. 
-
-Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [1](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und android.jar-Dateien abgelegt sein.
-
-## Bereitstellung weiterer Android-Versionen
-Neben API-Level 29 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
-
-Um den Android-Quellcode zu kompilieren, muss dieser zunächst heruntergeladen werden:
-
-    https://source.android.com/setup/build/downloading
-
-Danach sollte den Build-Anweisungen unter
-
-    https://source.android.com/setup/build/building
-
-gefolgt werden. Die bereitgestellte Android Version 9 entspricht einem generischen Development-Build (`lunch aosp_arm-eng`). Der gesamte Prozess benötigt eine Maschine mit ausreichend Rechenleistung und Speicher. Hier hat sich bspw. eine AWS-Instanz vom Typ "m5.2xlarge" mit 8 vCPUs und 32 GiB Arbeitsspeicher bewährt. Zudem sollte mindestens 500 GB Festplattenspeicher vorhanden sein. Weiterhin empfiehlt sich ein aktuelles Debian-System, auf dem gemäß die zusätzlich die folgenden Pakete installiert werden (vgl. [2](https://source.android.com/setup/build/initializing)):
-
-```sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip```
-
-Nach einem erfolgreichen Build können die .class-Dateien der Android-Services ausgehend vom WORKING_DIRECTORY unter 
-
-    out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar
-
-und die .class-Dateien der Interfaces und .Stub-Klassen unter
-
-    out/soong\.intermediates\frameworks\base\framework\android_common\jarjar\framework.jar
-
-erhalten werden. Um die Jar-Archive zu kombinieren und eine `android.jar`-Datei für den Android-Slicer zu erstellen können z.B. die folgenden Befehle genutzt werden:
-
-```
-$ mkdir android_jars
-$ (cd intermediate_jars; unzip -uo ../*.jar)
-$ jar -cvf android.jar -C android_jars .
-```
-
-Die Java-Quelldateien der Android-Systemservices sind im Ordner 
-
-    frameworks/base/services/core/java/
-
-zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der öffentlichen Service-Methoden genutzt werden, in den folgenden Ordnern gefunden werden:
-
-    frameworks/base/core/java/
-    frameworks/base/location/java/
-
-Es empfiehlt sich daher den Ordner in einem Zip-Archiv
-
-```
-zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/core/java/ frameworks/base/location/java/
-```
-
-von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
-
-![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
-
 
 # Programm Starten
 Zunächst sollte das Tool zusammen mit den benötigten Ressourcen mittels
@@ -156,3 +97,61 @@ Durch einen Klick auf den Button `View` können die Details des Slices eingesehe
 
 Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter und zeigt den fertigen Slice an. Sofern der Slicing-Prozess noch nicht abgeschlossen wurde, wird das Feld `Slice` noch nicht angezeigt und es erfolgt eine automatische Aktualisierung des Feldes `Log` nach allen 10 Sekunden.
 
+# Einbindung der Android-Ressourcen
+Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services als auch zur Rekonstruktion des Quellcodes während des Slicing-Prozesses die Java-Quelldateien der entsprechenden Klassen. Die Berechnung der Slices mittels WALA erfolgt dagegen auf Binärebene, sodass zusätzlich die kompilierten .class-Dateien innerhalb einer android.jar-Datei bereitgestellt werden müssen.  Diese sind für das API-Level 28 (Android 9) im Ordner 
+
+    /android-resources/android-29
+
+bereitgestellt, sodass im Rahmen der Evaluation keine weiteren Schritte notwendig sind.
+
+Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [1](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und android.jar-Dateien abgelegt sein.
+
+## Bereitstellung weiterer Android-Versionen (optional)
+Neben API-Level 29 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
+
+Um den Android-Quellcode zu kompilieren, muss dieser zunächst heruntergeladen werden:
+
+    https://source.android.com/setup/build/downloading
+
+Danach sollte den Build-Anweisungen unter
+
+    https://source.android.com/setup/build/building
+
+gefolgt werden. Die bereitgestellte Android Version 9 entspricht einem generischen Development-Build (`lunch aosp_arm-eng`). Der gesamte Prozess benötigt eine Maschine mit ausreichend Rechenleistung und Speicher. Hier hat sich bspw. eine AWS-Instanz vom Typ "m5.2xlarge" mit 8 vCPUs und 32 GiB Arbeitsspeicher bewährt. Zudem sollte mindestens 500 GB Festplattenspeicher vorhanden sein. Weiterhin empfiehlt sich ein aktuelles Debian-System, auf dem gemäß die zusätzlich die folgenden Pakete installiert werden (vgl. [2](https://source.android.com/setup/build/initializing)):
+
+```sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip```
+
+Nach einem erfolgreichen Build können die .class-Dateien der Android-Services ausgehend vom WORKING_DIRECTORY unter 
+
+    out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar
+
+und die .class-Dateien der Interfaces und .Stub-Klassen unter
+
+    out/soong\.intermediates\frameworks\base\framework\android_common\jarjar\framework.jar
+
+erhalten werden. Um die Jar-Archive zu kombinieren und eine `android.jar`-Datei für den Android-Slicer zu erstellen können z.B. die folgenden Befehle genutzt werden:
+
+```
+$ mkdir android_jars
+$ (cd intermediate_jars; unzip -uo ../*.jar)
+$ jar -cvf android.jar -C android_jars .
+```
+
+Die Java-Quelldateien der Android-Systemservices sind im Ordner 
+
+    frameworks/base/services/core/java/
+
+zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der öffentlichen Service-Methoden genutzt werden, in den folgenden Ordnern gefunden werden:
+
+    frameworks/base/core/java/
+    frameworks/base/location/java/
+
+Es empfiehlt sich daher den Ordner in einem Zip-Archiv
+
+```
+zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/core/java/ frameworks/base/location/java/
+```
+
+von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
+
+![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
