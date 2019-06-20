@@ -70,7 +70,7 @@ Nach einem erfolgreichen Build können die .class-Dateien der Android-Services a
 
     out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar
 
-und die .class-Dateien de Interfaces und .Stub-Klassen unter
+und die .class-Dateien der Interfaces und .Stub-Klassen unter
 
     out/soong\.intermediates\frameworks\base\framework\android_common\jarjar\framework.jar
 
