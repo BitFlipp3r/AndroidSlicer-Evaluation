@@ -99,7 +99,7 @@ zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/core/java
 
 von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
 
-![Android-Ressourcen Dateistruktur](images/android_resources.png?raw=true "Android-Ressourcen Dateistruktur")
+![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 
 # Programm Starten
@@ -124,7 +124,7 @@ Nachdem die Anwendung erfolgreich gestartet wurde, kann die graphische Benutzero
 aufgerufen werden. Eine Anmeldung ist mit dem Benutzerkonten `admin:admin` möglich. Das Benutzerkonten dient dabei keinen sicherheitskritischen Aspekten, sondern lediglich dem Session-Management und als Platzhalter für eine eventuell später ausgebaute Benutzerverwaltung. Daher wurde auf das Anlegen von personenbezogenen Benutzerkonten mit ausreichend starken Passwörtern verzichtet.
 
 ## Slice Erstellen
-![Slice Erstellen](images/create_slice.jpg?raw=true "Slice Erstellen")
+![Slice Erstellen](images/create_slice.JPG?raw=true "Slice Erstellen")
 
 Um einen Slice zu erstellen sind die folgenden Schritte notwendig:
 
@@ -147,12 +147,12 @@ Neben den bereits genannten Parametern kann unter dem Key `Exclusion_List` in de
 Nach der Auswahl aller Parameter kann das Slicing durch einen Klick auf den Button `Save` gestartet werden.
 
 ## Slice Ansicht
-![Slice Ansicht](images/slice_overview.jpg?raw=true "Slice Ansicht")
+![Slice Ansicht](images/slice_overview.JPG?raw=true "Slice Ansicht")
 Unter dem Menüpunkt `Slices` findet sich eine Übersicht der angelegten gestarteten Analysen. Ein laufender Slicing-Prozess wird durch zwei rotiertende, grüne Pfeile symbolisiert.
 
 Durch einen Klick auf den Button `View` können die Details des Slices eingesehen werden.
 
-![Slice Details](images/slice_detail.jpg?raw=true "Slice Details")
+![Slice Details](images/slice_detail.JPG?raw=true "Slice Details")
 
 Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter und zeigt den fertigen Slice an. Sofern der Slicing-Prozess noch nicht abgeschlossen wurde, wird das Feld `Slice` noch nicht angezeigt und es erfolgt eine automatische Aktualisierung des Feldes `Log` nach allen 10 Sekunden.
 
