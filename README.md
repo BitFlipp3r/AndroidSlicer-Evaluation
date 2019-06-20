@@ -62,7 +62,7 @@ Nachdem die Anwendung erfolgreich gestartet wurde, kann die graphische Benutzero
 
     http://localhost:8080
 
-aufgerufen werden. Eine Anmeldung ist mit dem Benutzerkonten `admin:admin` möglich. Das Benutzerkonto dient dabei keinen sicherheitskritischen Aspekten, sondern lediglich dem Session-Management und als Platzhalter für eine eventuell später ausgebaute Benutzerverwaltung. Daher wurde auf das Anlegen von personenbezogenen Benutzerkonten mit ausreichend starken Passwörtern verzichtet.
+aufgerufen werden. Eine Anmeldung ist mit dem Benutzerkonto `admin:admin` möglich. Das Benutzerkonto dient dabei keinen sicherheitskritischen Aspekten, sondern lediglich dem Session-Management und als Platzhalter für eine eventuell später ausgebaute Benutzerverwaltung. Daher wurde auf das Anlegen von personenbezogenen Benutzerkonten mit ausreichend starken Passwörtern verzichtet.
 
 ## Slice Erstellen
 ![Slice Erstellen](images/create_slice.JPG?raw=true "Slice Erstellen")
