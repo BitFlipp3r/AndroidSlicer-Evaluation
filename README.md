@@ -2,7 +2,7 @@
 Zugang für Evaluatoren des Android-Slicers im Rahmen der Masterthesis "Entwicklung eines Tools zur statischen Code-Analyse der Android-Systemservices auf Grundlage des WALA-Code-Slicings" (Arbeitstitel)
 
 # Vorwort
-Die Ziel der Masterarbeit soll es sein, auf der Grundlage des aktuellen Forschungsstandes ein zeitgemäßes Werkzeug zu entwickeln, welches Sicherheitsevaluatoren  bei der statischen Code-Analyse der Android-Systemservices unterstützt Dafür sollen innerhalb einer grafischen Oberfläche anhand von sinnvoll konfigurierbaren Parametern Code-Slices erzeugt und analysiert werden können. Das Slicing soll dabei auf der Grundlage des WALA-Slicers implementiert werden. Weiterhin soll das entstandene Programm durch Sicherheitsexperten im Rahmen von simulierten Code-Audits evaluiert und getestet werden.
+Die Ziel der Masterarbeit soll es sein, auf der Grundlage des aktuellen Forschungsstandes ein zeitgemäßes Werkzeug zu entwickeln, welches Sicherheitsevaluatoren  bei der statischen Code-Analyse der Android-Systemservices unterstützt. Dafür sollen innerhalb einer grafischen Oberfläche anhand von sinnvoll konfigurierbaren Parametern Code-Slices erzeugt und analysiert werden können. Das Slicing soll dabei auf der Grundlage des WALA-Slicers implementiert werden. Weiterhin soll das entstandene Programm durch Sicherheitsexperten im Rahmen von simulierten Code-Audits evaluiert und getestet werden.
 
 # Voraussetzungen 
 Folgende Software wird zum Ausführen des Android-Slicers benötigt:
