@@ -28,7 +28,7 @@ Der Android-Slicer nutzt eine MongoDB-Datenbank. Beim Start der Applikation wird
 
         https://docs.mongodb.com/manual/administration/install-community/
 
-    Der MongoDB-Compass (GUI für MongoDB) wird dabei nicht benötigt.
+    Der MongoDB-Compass (GUI für MongoDB) wird dabei nicht benötigt und muss daher nicht mit installiert werden.
 
 3. Nachdem die MongoDB-Ausführdateien (z.B. mongod.exe) installiert wurden, muss der Datenbank-Ordner erzeugt werden. Unter Windows wird dieser z.B. unter C:\data\db erwartet. Danach kann der MongoDB-Server über den Konsolenbefehl:
 
@@ -42,6 +42,7 @@ Der Android-Slicer nutzt eine MongoDB-Datenbank. Beim Start der Applikation wird
 
         mongod --dbpath=C:\folder\to\databases\data\db
 
+*Hinweis:* Da MongoDB seit der Version 3.4 keine 32-Bit Systeme mehr unterstützt, wird zum Betrieb des Android-Slicers weiterhin ein 64-Bit Betriebssystem benötigt. Andernfalls muss eine ältere Version der Datenbank installiert werden (vgl. [How to install MongoDB on Windows 7 32 bit? - Stack Overflow](https://stackoverflow.com/questions/51811140/how-to-install-mongodb-on-windows-7-32-bit)).
 
 # Programm Starten
 Zunächst sollte das Tool zusammen mit den benötigten Ressourcen mittels
@@ -104,7 +105,7 @@ Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services
 
 bereitgestellt, sodass im Rahmen der Evaluation keine weiteren Schritte notwendig sind.
 
-Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann in den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [1](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und `android.jar`-Dateien abgelegt sein.
+Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann in den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [Codenames, Tags, and Build Numbers | Android Open Source Project](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und `android.jar`-Dateien abgelegt sein.
 
 ## Bereitstellung weiterer Android-Versionen (optional)
 Neben API-Level 29 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
@@ -117,7 +118,7 @@ Danach sollte den Build-Anweisungen unter
 
     https://source.android.com/setup/build/building
 
-gefolgt werden. Die bereitgestellte Android Version 9 entspricht einem generischen Development-Build (`lunch aosp_arm-eng`). Der gesamte Prozess benötigt eine Maschine mit ausreichend Rechenleistung und Speicher. Hier hat sich bspw. eine AWS-Instanz vom Typ "m5.2xlarge" mit 8 vCPUs und 32 GiB Arbeitsspeicher bewährt. Zudem sollte mindestens 500 GB Festplattenspeicher vorhanden sein. Weiterhin empfiehlt sich ein aktuelles Debian-System, auf dem zusätzlich die folgenden Pakete installiert werden (vgl. [2](https://source.android.com/setup/build/initializing)):
+gefolgt werden. Die bereitgestellte Android Version 9 entspricht einem generischen Development-Build (`lunch aosp_arm-eng`). Der gesamte Prozess benötigt eine Maschine mit ausreichend Rechenleistung und Speicher. Hier hat sich bspw. eine AWS-Instanz vom Typ "m5.2xlarge" mit 8 vCPUs und 32 GiB Arbeitsspeicher bewährt. Zudem sollte mindestens 500 GB Festplattenspeicher vorhanden sein. Weiterhin empfiehlt sich ein aktuelles Debian-System, auf dem zusätzlich die folgenden Pakete installiert werden (vgl. [Establishing a Build Environment | Android Open Source Project](https://source.android.com/setup/build/initializing)):
 
 ```sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip```
 
