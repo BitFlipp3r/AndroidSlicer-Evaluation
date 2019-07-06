@@ -53,11 +53,13 @@ heruntergeladen werden.
 
 Der Start des Android-Slicers erfolgt nach einem Wechsel in das Download-Verzeichnis (`cd AndroidSlicer-Evaluation`) über den Konsolenbefehl:
 
-    java -jar android-slicer-0.9.0-SNAPSHOT.jar
+    java -jar android-slicer-0.9.1.jar
 
 Um das Tool mit einem eingebetteten MongoDB-Server zu starten, müssen die folgenden Parameter genutzt werden:
 
-    java -jar android-slicer-0.9.0-SNAPSHOT.jar --spring.profiles.active=prod,embedded-mongo
+    java -jar android-slicer-0.9.1.jar --spring.profiles.active=prod,embedded-mongo
+
+*Hinweis: Sollten während des Slicings Out-Of-Memory-Fehler auftreten, kann zusätzlich die maximale Speichernutzung (Heap-Size) der JVM mit dem Parameter -Xmx<ZahlM|ZahlG> erhöht werden (z.B. -Xmx4069M oder -Xmx8G)*
 
 Nachdem die Anwendung erfolgreich gestartet wurde, kann die graphische Benutzeroberfläche des Android-Slicers in einem Browser über die URL
 
