@@ -158,3 +158,27 @@ zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/core/java
 von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
 
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
+
+# Changelog
+## Version 0.9.1
+- Fehlende Quelldateien (wie z.B. IBluetToothManager.aidl) zum Ressourcen-Ordner hinzugefügt.
+- Return-Statements für Blöcke, in denen WALA ein Statement identifiziert hat, werden bei der Rekonstruktion des Quellcodes jetzt immer in den Slice hinzugefügt. Z.b. wird
+    ```
+    if (isBluetoothDisallowed()) {
+    }
+    ```
+    damit zu
+    ```
+    if (isBluetoothDisallowed()) {
+        return false;
+    }
+    ```
+   obwohl WALA nur die Zeile `if (isBluetoothDisallowed())` ausgegeben hat.
+- Null-Pointer-Exception für Log-Nachricht behoben
+- Thread-Pool-Größe angepasst
+- Priorität des Slicing-Threads erhöht (Thread.MAX_PRIORITY)
+- Log-Nachrichten angepasst für besseres Verständnis
+- Die Menüpunkte "Audit" und "Logs" wurden im Frontend entfernt, da die Server-Endpunkte nicht eingerichtet sind. Die Möglichkeit besteht während der Code-Generation mit JHipster, wurde für diesen Prototypen allerdings nicht ausgewählt.
+- Fehlermeldungen bzgl. nicht gefunden Quelldateien geben jetzt den durchsuchten Pfad mit an.
+- Alle Backslashes in Ordner-Pfaden wurden mit File.Seperator ersetzt, um eine größere Plattformunabhängigkeit zu gewährleisten.
+- Fehlende Datenflussoptionen wurden hinzugefügt.
