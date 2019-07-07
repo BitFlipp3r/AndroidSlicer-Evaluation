@@ -178,7 +178,7 @@ von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien au
 - Thread-Pool-Größe angepasst
 - Priorität des Slicing-Threads erhöht (Thread.MAX_PRIORITY)
 - Log-Nachrichten angepasst für besseres Verständnis
-- Die Menüpunkte "Audit" und "Logs" wurden im Frontend entfernt, da die Server-Endpunkte nicht eingerichtet sind. Die Möglichkeit besteht während der Code-Generation mit JHipster, wurde für diesen Prototypen allerdings nicht ausgewählt.
+- Die Menüpunkte "Audit" und "Logs" wurden im Frontend entfernt, da für diesen Prototypen die Server-Endpunkte nicht gemäß dem JHipster-Standard eingerichtet sind.
 - Fehlermeldungen bzgl. nicht gefunden Quelldateien geben jetzt den durchsuchten Pfad mit an.
 - Alle Backslashes in Ordner-Pfaden wurden mit File.Seperator ersetzt, um eine größere Plattformunabhängigkeit zu gewährleisten.
 - Fehlende Datenflussoptionen wurden hinzugefügt.
