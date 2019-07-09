@@ -53,11 +53,11 @@ heruntergeladen werden.
 
 Der Start des Android-Slicers erfolgt nach einem Wechsel in das Download-Verzeichnis (`cd AndroidSlicer-Evaluation`) über den Konsolenbefehl:
 
-    java -jar android-slicer-0.9.1.jar
+    java -jar android-slicer-0.9.2.jar
 
 Um das Tool mit einem eingebetteten MongoDB-Server zu starten, müssen die folgenden Parameter genutzt werden:
 
-    java -jar android-slicer-0.9.1.jar --spring.profiles.active=prod,embedded-mongo
+    java -jar android-slicer-0.9.2.jar --spring.profiles.active=prod,embedded-mongo
 
 *Hinweis: Sollten während des Slicings Out-Of-Memory-Fehler auftreten, kann zusätzlich die maximale Speichernutzung (Heap-Size) der JVM mit dem Parameter -Xmx<ZahlM|ZahlG> erhöht werden (z.B. -Xmx4069M oder -Xmx8G)*
 
@@ -160,6 +160,11 @@ von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien au
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 # Changelog
+## Version 0.9.2
+- Die Quelldatei des System-Services wird jetzt in der Detailansicht mit angezeigt.
+- Es wurde ein Diff-Editor hinzugefügt.
+- Datenbank-Logs während einer Slicing-Analyse werden jetzt asynchron mit kurzen Wartezeiten geschrieben, um die Last auf der DB zu verringern.
+- Die Log-Nachrichten für Slice-Statements, welche nicht vom Typ NORMAL sind, wurden entfernt.
 ## Version 0.9.1
 - Fehlende Quelldateien (wie z.B. IBluetToothManager.aidl) zum Ressourcen-Ordner hinzugefügt.
 - Return-Statements für Blöcke, in denen WALA ein Statement identifiziert hat, werden bei der Rekonstruktion des Quellcodes jetzt immer in den Slice hinzugefügt. Z.b. wird
