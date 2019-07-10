@@ -163,7 +163,7 @@ von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien au
 ## Version 0.9.2
 - Die Quelldatei des System-Services wird jetzt in der Detailansicht mit angezeigt.
 - Es wurde ein Diff-Editor hinzugefügt.
-- Datenbank-Logs während einer Slicing-Analyse werden jetzt asynchron mit kurzen Wartezeiten geschrieben, um die Last auf der DB zu verringern.
+- ~~Datenbank-Logs während einer Slicing-Analyse werden jetzt asynchron mit kurzen Wartezeiten geschrieben, um die Last auf der DB zu verringern.~~ (DB Logs sind wieder im Slicer-Thread, da Logs sonst teilweise stark verspätet erscheinen. Die Verringerung der Log-Details stellte sich als sinnvoller heraus, um die DB-Last zu senken.)
 - Die Log-Nachrichten für Slice-Statements, welche nicht vom Typ NORMAL sind, wurden entfernt.
 ## Version 0.9.1
 - Fehlende Quelldateien (wie z.B. IBluetToothManager.aidl) zum Ressourcen-Ordner hinzugefügt.
