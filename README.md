@@ -159,7 +159,7 @@ zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der ö
 Es empfiehlt sich daher den Ordner in einem Zip-Archiv
 
 ```
-zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/core/java/ frameworks/base/location/java/
+zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/services/restrictions/java/ frameworks/base/services/accessibility/java/ frameworks/base/services/devicepolicy/java/ frameworks/base/services/autofill/java/ frameworks/base/services/voiceinteraction/java/ frameworks/base/services/backup/java/ frameworks/base/services/print/java/ frameworks/base/core/java/ frameworks/base/location/java/
 ```
 
 von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
