@@ -143,6 +143,13 @@ $ jar -cvf android.jar -C android_jars .
 Die Java-Quelldateien der Android-Systemservices sind im Ordner 
 
     frameworks/base/services/core/java/
+    frameworks/base/services/restrictions/java/
+    frameworks/base/services/accessibility/java/
+    frameworks/base/services/devicepolicy/java/
+    frameworks/base/services/autofill/java/
+    frameworks/base/services/voiceinteraction/java/
+    frameworks/base/services/backup/java/
+    frameworks/base/services/print/java/
 
 zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der öffentlichen Service-Methoden genutzt werden, in den folgenden Ordnern gefunden werden:
 
