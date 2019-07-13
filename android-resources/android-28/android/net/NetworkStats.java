@@ -23,7 +23,6 @@ import android.annotation.UnsupportedAppUsage;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.util.Slog;
 import android.util.SparseBooleanArray;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -34,10 +33,10 @@ import libcore.util.EmptyArray;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.function.Predicate;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Collection of active network statistics. Can contain summary details across
@@ -996,8 +995,8 @@ public class NetworkStats implements Parcelable {
             return;
         }
         filter(e -> (limitUid == UID_ALL || limitUid == e.uid)
-            && (limitTag == TAG_ALL || limitTag == e.tag)
-            && (limitIfaces == INTERFACES_ALL
+                && (limitTag == TAG_ALL || limitTag == e.tag)
+                && (limitIfaces == INTERFACES_ALL
                     || ArrayUtils.contains(limitIfaces, e.iface)));
     }
 

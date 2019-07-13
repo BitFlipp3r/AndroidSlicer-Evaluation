@@ -966,6 +966,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
             }
         }
 
+        mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
+
         mTethering = makeTethering();
 
         mPermissionMonitor = new PermissionMonitor(mContext, mNetd);
@@ -1012,8 +1014,6 @@ public class ConnectivityService extends IConnectivityManager.Stub
 
         final DataConnectionStats dataConnectionStats = new DataConnectionStats(mContext);
         dataConnectionStats.startMonitoring();
-
-        mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
 
         mKeepaliveTracker = new KeepaliveTracker(mContext, mHandler);
         mNotifier = new NetworkNotificationManager(mContext, mTelephonyManager,
@@ -2578,8 +2578,8 @@ public class ConnectivityService extends IConnectivityManager.Stub
                     if (nai.everConnected) {
                         loge("ERROR: cannot call explicitlySelected on already-connected network");
                     }
-                    nai.networkMisc.explicitlySelected = (msg.arg1 == 1);
-                    nai.networkMisc.acceptUnvalidated = (msg.arg1 == 1) && (msg.arg2 == 1);
+                    nai.networkMisc.explicitlySelected = toBool(msg.arg1);
+                    nai.networkMisc.acceptUnvalidated = toBool(msg.arg1) && toBool(msg.arg2);
                     // Mark the network as temporarily accepting partial connectivity so that it
                     // will be validated (and possibly become default) even if it only provides
                     // partial internet access. Note that if user connects to partial connectivity
@@ -2587,7 +2587,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
                     // out of wifi coverage) and if the same wifi is available again, the device
                     // will auto connect to this wifi even though the wifi has "no internet".
                     // TODO: Evaluate using a separate setting in IpMemoryStore.
-                    nai.networkMisc.acceptPartialConnectivity = (msg.arg2 == 1);
+                    nai.networkMisc.acceptPartialConnectivity = toBool(msg.arg2);
                     break;
                 }
                 case NetworkAgent.EVENT_SOCKET_KEEPALIVE: {
@@ -2613,9 +2613,11 @@ public class ConnectivityService extends IConnectivityManager.Stub
                     final boolean valid = ((msg.arg1 & NETWORK_VALIDATION_RESULT_VALID) != 0);
                     final boolean wasValidated = nai.lastValidated;
                     final boolean wasDefault = isDefaultNetwork(nai);
-                    if (nai.everCaptivePortalDetected && !nai.captivePortalLoginNotified
-                            && valid) {
-                        nai.captivePortalLoginNotified = true;
+                    // Only show a connected notification if the network is pending validation
+                    // after the captive portal app was open, and it has now validated.
+                    if (nai.captivePortalValidationPending && valid) {
+                        // User is now logged in, network validated.
+                        nai.captivePortalValidationPending = false;
                         showNetworkNotification(nai, NotificationType.LOGGED_IN);
                     }
 
@@ -2686,9 +2688,6 @@ public class ConnectivityService extends IConnectivityManager.Stub
                         final int oldScore = nai.getCurrentScore();
                         nai.lastCaptivePortalDetected = visible;
                         nai.everCaptivePortalDetected |= visible;
-                        if (visible) {
-                            nai.captivePortalLoginNotified = false;
-                        }
                         if (nai.lastCaptivePortalDetected &&
                             Settings.Global.CAPTIVE_PORTAL_MODE_AVOID == getCaptivePortalMode()) {
                             if (DBG) log("Avoiding captive portal network: " + nai.name());
@@ -3497,6 +3496,12 @@ public class ConnectivityService extends IConnectivityManager.Stub
                 new CaptivePortal(new CaptivePortalImpl(network).asBinder()));
         appIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
 
+        // This runs on a random binder thread, but getNetworkAgentInfoForNetwork is thread-safe,
+        // and captivePortalValidationPending is volatile.
+        final NetworkAgentInfo nai = getNetworkAgentInfoForNetwork(network);
+        if (nai != null) {
+            nai.captivePortalValidationPending = true;
+        }
         Binder.withCleanCallingIdentity(() ->
                 mContext.startActivityAsUser(appIntent, UserHandle.CURRENT));
     }
@@ -3675,6 +3680,13 @@ public class ConnectivityService extends IConnectivityManager.Stub
         if (nai == null || !shouldPromptUnvalidated(nai)) {
             return;
         }
+
+        // Stop automatically reconnecting to this network in the future. Automatically connecting
+        // to a network that provides no or limited connectivity is not useful, because the user
+        // cannot use that network except through the notification shown by this method, and the
+        // notification is only shown if the network is explicitly selected by the user.
+        nai.asyncChannel.sendMessage(NetworkAgent.CMD_PREVENT_AUTOMATIC_RECONNECT);
+
         // TODO: Evaluate if it's needed to wait 8 seconds for triggering notification when
         // NetworkMonitor detects the network is partial connectivity. Need to change the design to
         // popup the notification immediately when the network is partial connectivity.
@@ -4395,8 +4407,12 @@ public class ConnectivityService extends IConnectivityManager.Stub
             List<String> interfaces = new ArrayList<>();
             for (Network network : underlyingNetworks) {
                 LinkProperties lp = getLinkProperties(network);
-                if (lp != null && !TextUtils.isEmpty(lp.getInterfaceName())) {
-                    interfaces.add(lp.getInterfaceName());
+                if (lp != null) {
+                    for (String iface : lp.getAllInterfaceNames()) {
+                        if (!TextUtils.isEmpty(iface)) {
+                            interfaces.add(iface);
+                        }
+                    }
                 }
             }
             if (!interfaces.isEmpty()) {
@@ -6784,7 +6800,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
 
     /**
      * Notify NetworkStatsService that the set of active ifaces has changed, or that one of the
-     * properties tracked by NetworkStatsService on an active iface has changed.
+     * active iface's tracked properties has changed.
      */
     private void notifyIfacesChangedForNetworkStats() {
         ensureRunningOnConnectivityServiceThread();
@@ -6793,9 +6809,11 @@ public class ConnectivityService extends IConnectivityManager.Stub
         if (activeLinkProperties != null) {
             activeIface = activeLinkProperties.getInterfaceName();
         }
+
+        final VpnInfo[] vpnInfos = getAllVpnInfo();
         try {
             mStatsService.forceUpdateIfaces(
-                    getDefaultNetworks(), getAllVpnInfo(), getAllNetworkState(), activeIface);
+                    getDefaultNetworks(), getAllNetworkState(), activeIface, vpnInfos);
         } catch (Exception ignored) {
         }
     }
@@ -6899,8 +6917,10 @@ public class ConnectivityService extends IConnectivityManager.Stub
 
         final int userId = UserHandle.getCallingUserId();
 
-        final IpMemoryStore ipMemoryStore = IpMemoryStore.getMemoryStore(mContext);
-        ipMemoryStore.factoryReset();
+        Binder.withCleanCallingIdentity(() -> {
+            final IpMemoryStore ipMemoryStore = IpMemoryStore.getMemoryStore(mContext);
+            ipMemoryStore.factoryReset();
+        });
 
         // Turn airplane mode off
         setAirplaneMode(false);

@@ -130,13 +130,14 @@ Nach einem erfolgreichen Build können die .class-Dateien der Android-Services a
 
 und die .class-Dateien der Interfaces und .Stub-Klassen unter
 
-    out/soong\.intermediates\frameworks\base\framework\android_common\jarjar\framework.jar
+    out/soong/.intermediates/frameworks/base/framework/android_common/jarjar/framework.jar
 
 erhalten werden. Um die Jar-Archive zu kombinieren und eine `android.jar`-Datei für den Android-Slicer zu erstellen können z.B. die folgenden Befehle genutzt werden:
 
 ```
 $ mkdir android_jars
-$ (cd intermediate_jars; unzip -uo ../*.jar)
+$ (cd android_jars; unzip -uo ../out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar)
+$ (cd android_jars; unzip -uo ../out/soong/.intermediates/frameworks/base/framework/android_common/jarjar/framework.jar)
 $ jar -cvf android.jar -C android_jars .
 ```
 
@@ -159,10 +160,10 @@ zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der ö
 Es empfiehlt sich daher den Ordner in einem Zip-Archiv
 
 ```
-zip -r sources.zip frameworks/base/services/core/java/ frameworks/base/services/restrictions/java/ frameworks/base/services/accessibility/java/ frameworks/base/services/devicepolicy/java/ frameworks/base/services/autofill/java/ frameworks/base/services/voiceinteraction/java/ frameworks/base/services/backup/java/ frameworks/base/services/print/java/ frameworks/base/core/java/ frameworks/base/location/java/
+(cd frameworks/base/services/core/java/; zip -r ../../../../../android-sources.zip .); (cd frameworks/base/services/restrictions/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/accessibility/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/devicepolicy/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/autofill/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/voiceinteraction/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/backup/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/print/java/; zip -ur ../../../../../android-sources.zip. ); (cd frameworks/base/core/java/; zip -ur ../../../../android-sources.zip .); (cd frameworks/base/location/java/; zip -ur ../../../../android-sources.zip .)
 ```
 
-von der Build-Machine herunterzuladen. Danach sollten alle Ordner und Dateien ausgehend von den oben genannten Pfaden sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
+von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `android-sources.zip` sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
 
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
