@@ -12,6 +12,20 @@ Da es sich bei der serverseite des Android-Slicers um eine Java-Applikation hand
 
     https://java.com/de/download/manual.jsp
 
+>## GraalVM (alternativ)
+>Anstelle der JVM kann alternativ auch die GraalVM genutzt werden. GraalVM ist eine polyglotte Alternative für JVM und soll eine bessere Performance für JVM-Sprachen bieten. Die Performance des Android-Slicers konnte dadurch signifikant erhöht werden. Neben der Erstellung von nativen Code für JVM-Sprachen erlaubt es GraalVM auch mit einfachen Compiler-Flags optimierten JIT-Code zu kompilieren (vgl. [GraalVM - JVM Languages Reference](https://www.graalvm.org/docs/reference-manual/languages/jvm/#running-jvm-based-apps)).
+
+>Der Compiler-Parameter `-Dgraal.ShowConfiguration` stellt dabei verschiedene Optimierungsstufen bereit. Für die kostenfreie Community-Version von GraalVM bietet die Stufe `community` die höchsten Optimierungen. 
+
+>Die Community-Version der GraalVM kann unter
+
+>https://github.com/oracle/graal/releases
+
+>heruntergeladen werden. Danach sollte der Android-Slicer mit der Java-Binary aus dem heruntergeladen Zip und dem `-Dgraal`-Flag gestartet werden. Unter Windows würde das Kommando zum Beispiel folgendermaßen aussehen:
+
+ >`C:\[...]\graalvm-ce-19.1.0\bin\java.exe -jar android-slicer-0.9.2.jar -Dgraal.CompilerConfiguration=community`
+
+
 ## Web-Browser
 Die graphische Benutzeroberfläche des Android-Slicers besteht aus einer Angular-Anwendung und kann daher mit jedem aktuellen Web-Browser bedient werden.
 
