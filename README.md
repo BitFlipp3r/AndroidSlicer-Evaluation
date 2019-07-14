@@ -169,12 +169,13 @@ Die Java-Quelldateien der Android-Systemservices sind im Ordner
 zu finden. Weiterhin können die AIDL-Spezifikationen, welche zur Anzeige der öffentlichen Service-Methoden genutzt werden, in den folgenden Ordnern gefunden werden:
 
     frameworks/base/core/java/
-    frameworks/base/location/java/
+    frameworks/base/location/java/  (für den LocationManager)
+    system/bt/binder/  (für den BluetoothManager)
 
 Es empfiehlt sich daher den Ordner in einem Zip-Archiv
 
 ```
-(cd frameworks/base/services/core/java/; zip -r ../../../../../android-sources.zip .); (cd frameworks/base/services/restrictions/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/accessibility/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/devicepolicy/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/autofill/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/voiceinteraction/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/backup/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/print/java/; zip -ur ../../../../../android-sources.zip. ); (cd frameworks/base/core/java/; zip -ur ../../../../android-sources.zip .); (cd frameworks/base/location/java/; zip -ur ../../../../android-sources.zip .)
+(cd frameworks/base/services/core/java/; zip -r ../../../../../android-sources.zip .); (cd frameworks/base/services/restrictions/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/accessibility/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/devicepolicy/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/autofill/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/voiceinteraction/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/backup/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/print/java/; zip -ur ../../../../../android-sources.zip. ); (cd frameworks/base/core/java/; zip -ur ../../../../android-sources.zip .); (cd frameworks/base/location/java/; zip -ur ../../../../android-sources.zip .); (cd system/bt/binder/android/bluetooth/; zip -ur ../../../android-sources.zip .)
 ```
 
 von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `android-sources.zip` sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
