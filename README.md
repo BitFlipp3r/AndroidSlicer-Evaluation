@@ -117,7 +117,7 @@ Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter un
 # Einbindung der Android-Ressourcen
 Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services als auch zur Rekonstruktion des Quellcodes während des Slicing-Prozesses die Java-Quelldateien der entsprechenden Klassen. Die Berechnung der Slices mittels WALA erfolgt dagegen auf Binärebene, sodass zusätzlich die kompilierten .class-Dateien innerhalb einer `android.jar`-Datei bereitgestellt werden müssen.  Diese sind für das API-Level 28 (Android 9) im Ordner 
 
-    /android-resources/android-29
+    /android-resources/android-28
 
 bereitgestellt, sodass im Rahmen der Evaluation keine weiteren Schritte notwendig sind.
 
