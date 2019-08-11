@@ -58,6 +58,14 @@ Der Android-Slicer nutzt eine MongoDB-Datenbank. Beim Start der Applikation wird
 
 *Hinweis:* Da MongoDB seit der Version 3.4 keine 32-Bit Systeme mehr unterstützt, wird zum Betrieb des Android-Slicers weiterhin ein 64-Bit Betriebssystem benötigt. Andernfalls muss eine ältere Version der Datenbank installiert werden (vgl. [How to install MongoDB on Windows 7 32 bit? - Stack Overflow](https://stackoverflow.com/questions/51811140/how-to-install-mongodb-on-windows-7-32-bit)).
 
+Ein Löschen der Datenbank ist über die Mongo-Konsole möglich:
+
+```
+$ mongo
+> use android_slicer_db
+> db.dropDatabase()
+```
+
 # Programm Starten
 Zunächst sollte das Tool zusammen mit den benötigten Ressourcen mittels
 
@@ -189,8 +197,8 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 
 # Changelog
 ## Version 0.9.3
-- Update der JHipster auf Version 6.2 (vgl. [JHipster release v6.2.0](https://www.jhipster.tech/2019/08/01/jhipster-release-6.2.0.html))
-- Auswahl der CFA-Algorithmen und -Level im Rahmen der Pointer-Analysen sind jetzt möglich.
+- Update der JHipster Version auf 6.2 (vgl. [JHipster release v6.2.0](https://www.jhipster.tech/2019/08/01/jhipster-release-6.2.0.html))
+- Auswahl der CFA-Algorithmen und -Level im Rahmen der Pointer-Analysen sind jetzt möglich (Achtung: Aufgrund des veränderten Datenbankmodells muss die android_slicer_db im MongoDB-Server gelöscht werden.)
 ## Version 0.9.2
 - Die Quelldatei des System-Services wird jetzt in der Detailansicht mit angezeigt.
 - Es wurde ein Diff-Editor hinzugefügt.
