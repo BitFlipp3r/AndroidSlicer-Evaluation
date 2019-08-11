@@ -23,7 +23,7 @@ Da es sich bei der serverseite des Android-Slicers um eine Java-Applikation hand
 
 >heruntergeladen werden. Danach sollte der Android-Slicer mit der Java-Binary aus dem heruntergeladen Zip und dem `-Dgraal`-Flag gestartet werden. Unter Windows würde das Kommando zum Beispiel folgendermaßen aussehen:
 
- >`C:\[...]\graalvm-ce-19.1.0\bin\java.exe -jar android-slicer-0.9.2.jar -Dgraal.CompilerConfiguration=community`
+ >`C:\[...]\graalvm-ce-19.1.1\bin\java.exe -jar android-slicer-0.9.3.jar -Dgraal.CompilerConfiguration=community`
 
 
 ## Web-Browser
@@ -67,11 +67,11 @@ heruntergeladen werden.
 
 Der Start des Android-Slicers erfolgt nach einem Wechsel in das Download-Verzeichnis (`cd AndroidSlicer-Evaluation`) über den Konsolenbefehl:
 
-    java -jar android-slicer-0.9.2.jar
+    java -jar android-slicer-0.9.3.jar
 
 Um das Tool mit einem eingebetteten MongoDB-Server zu starten, müssen die folgenden Parameter genutzt werden:
 
-    java -jar android-slicer-0.9.2.jar --spring.profiles.active=prod,embedded-mongo
+    java -jar android-slicer-0.9.3.jar --spring.profiles.active=prod,embedded-mongo
 
 *Hinweis: Sollten während des Slicings Out-Of-Memory-Fehler auftreten, kann zusätzlich die maximale Speichernutzung (Heap-Size) der JVM mit dem Parameter -Xmx<ZahlM|ZahlG> erhöht werden (z.B. -Xmx4069M oder -Xmx8G)*
 
@@ -82,7 +82,7 @@ Nachdem die Anwendung erfolgreich gestartet wurde, kann die graphische Benutzero
 aufgerufen werden. Eine Anmeldung ist mit dem Benutzerkonto `admin:admin` möglich. Das Benutzerkonto dient dabei keinen sicherheitskritischen Aspekten, sondern lediglich dem Session-Management und als Platzhalter für eine eventuell später ausgebaute Benutzerverwaltung. Daher wurde auf das Anlegen von personenbezogenen Benutzerkonten mit ausreichend starken Passwörtern verzichtet.
 
 ## Slice Erstellen
-![Slice Erstellen](images/create_slice.JPG?raw=true "Slice Erstellen")
+![Slice Erstellen](images/ansicht-slice-erstellen.png?raw=true "Slice Erstellen")
 
 Um einen Slice zu erstellen sind die folgenden Schritte notwendig:
 
@@ -94,11 +94,14 @@ Um einen Slice zu erstellen sind die folgenden Schritte notwendig:
 
 4. Auswahl der Seed-Statements: Die Seed-Statements entsprechen den Sicherheitsabfragen, welche durch das Code-Slicing analysiert werden sollen. Eine Liste mit möglichen Seed-Statements wird in einem Dropdown zur Auswahl gegeben. Diese ist in den Einstellungen (Settings) unter dem Key `Seed_Statements` definiert und kann dort auch geändert bzw. erweitert werden. Zusätzliche Seed-Statements können nach einem Klick in die Textbox eingegeben und mittels der Bestätigung über die Enter-Taste hinzugefügt werden. Neue Seed-Statements werden temporär in die verfügbare Auswahl übernommen, aber nicht permanent gespeichert.
 
-5. Auswahl der Reflection-Options: Hier kann der Umfang des Call-Graphen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
+5. Auswahl des CFA-Levels: Im Rahmen der Points-To-Analysen können verschiedene Präzisionsstufen bzgl. der Kontextsensitivität der CFA-Algorithmen ausgewählt werden. Die 0-Level-Analyse entspricht dabei einem n-CFA-Algorithmus mit n = 0, d.h. es wird lediglich eine kontextinsensitive, typbasierte Analyse durchgeführt, wobei Objekte lediglich anhand der Klassennamen unterschieden werden. Variablen werden ebenfalls lediglich anhand ihrer Namen unterschieden. Die 0-1-CFA nimmt dagegen eine Call Stack-basierte Unterscheidung der einzelnen Objektinstanzen vor, wobei die Nachverfolgung des Call Stacks auf eine Ebene begrenzt ist. Der Referenzkontext der Variablen unterliegt weiterhin einem globalen Kontext. Sofern der Typ "N_CFA" oder "VANILLA_NFC_A" gewählt wird, muss zusätzlich ein Wert für n (CFA-Level) eingeben werden, wobei die Algorithmen sowohl Variablen anhand von verschiedenen Referenzkontexten als auch Objekte durch Instanzkontexte anhand des Call Stacks unterscheiden. Das CFA-Level entspricht dabei der Anzahl an Aufrufermethoden, welche auf dem Call Stack nachverfolgt werden. Algorithmen mit der Bezeichnung "Vanilla" schalten von WALA eingebaute Optimierungen aus (vgl. [UserGuide:PointerAnalysis](http://wala.sourceforge.net/wiki/index.php/UserGuide:PointerAnalysis)). Weiterhin können die Analysen mit objektsensitiven Algorithmen für Container-Objekte verknüpft werden, wie z.B. die 0-1-Container-CFA. Diese differenzieren Methodenaufrufe für Container, beispielsweise `List.add()`, anhand der Allozierungen des entsprechenden Container-Objekts. Ein höheres CFA-Level bedeutet in der Regel eine höhere Genauigkeit, allerdings auch einen größeren Ressourcenaufwand. In der Regel ist die 0-1-CFA gut für das Slicing geeignet.
 
-6. Auswahl der Data-Dependence-Options: Hier kann der Umfang der Datenflussanalysen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
 
-7. Auswahl der Control-Dependence-Options: Hier kann der Umfang der Kontrollflussanalysen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
+6. Auswahl der Reflection-Options: Hier kann der Umfang des Call-Graphen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
+
+7. Auswahl der Data-Dependence-Options: Hier kann der Umfang der Datenflussanalysen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
+
+8. Auswahl der Control-Dependence-Options: Hier kann der Umfang der Kontrollflussanalysen eingestellt werden. Die verfügbaren Parameter sind innerhalb des Dropdowns beschrieben. Weiterhin wird bei der Erstellung eines neuen Slices zunächst immer der Standard-Parameter ausgewählt. Dieser kann in den Slicer-Optionen im Administrationsbereich geändert werden, indem der Wert `Default` auf `true` geändert wird. Dabei werden die Default-Werte der anderen Parameter des gleichen Typs auf `false` gesetzt. Zusätzlich können die Beschreibungstexte in den Slicer-Optionen angepasst werden. 
 
 Neben den bereits genannten Parametern kann unter dem Key `Exclusion_List` in den Einstellungen (Settings) zusätzlich die Liste an Klassen geändert bzw. erweitert werden, welche nicht in die Analysen einbezogen werden sollen. Die Liste soll verhindern, dass der Slicing-Algorithmus zu tief in das Java-Framework vordringt und dadurch nicht mehr terminiert.
 
@@ -110,9 +113,11 @@ Unter dem Menüpunkt `Slices` findet sich eine Übersicht der angelegten Analyse
 
 Durch einen Klick auf den Button `View` können die Details des Slices eingesehen werden.
 
-![Slice Details](images/slice_detail.JPG?raw=true "Slice Details")
+![Slice Details](images/ansicht-slice-detail.png?raw=true "Slice Details")
 
-Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter und zeigt den fertigen Slice an. Sofern der Slicing-Prozess noch nicht abgeschlossen wurde, wird das Feld `Slice` noch nicht angezeigt und es erfolgt eine automatische Aktualisierung des Feldes `Log` nach allen 10 Sekunden.
+Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter und zeigt den fertigen Slice an. Sofern der Slicing-Prozess noch nicht abgeschlossen wurde, wird das Feld `Slice` noch nicht angezeigt und es erfolgt eine automatische Aktualisierung des Feldes `Log` nach allen 10 Sekunden. 
+
+Der Slice kann dabei mit dem originalen Quelltext verglichen werden. Eine Diff-Ansicht der beiden Code-Dateien kann über den `Show Diff`-Button aktiviert werden.
 
 # Einbindung der Android-Ressourcen
 Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services als auch zur Rekonstruktion des Quellcodes während des Slicing-Prozesses die Java-Quelldateien der entsprechenden Klassen. Die Berechnung der Slices mittels WALA erfolgt dagegen auf Binärebene, sodass zusätzlich die kompilierten .class-Dateien innerhalb einer `android.jar`-Datei bereitgestellt werden müssen.  Diese sind für das API-Level 28 (Android 9) im Ordner 
@@ -124,7 +129,7 @@ bereitgestellt, sodass im Rahmen der Evaluation keine weiteren Schritte notwendi
 Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann in den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [Codenames, Tags, and Build Numbers | Android Open Source Project](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und `android.jar`-Dateien abgelegt sein.
 
 ## Bereitstellung weiterer Android-Versionen (optional)
-Neben API-Level 29 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
+Neben API-Level 28 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
 
 Um den Android-Quellcode zu kompilieren, muss dieser zunächst heruntergeladen werden:
 
@@ -183,6 +188,9 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 # Changelog
+## Version 0.9.3
+- Update der JHipster auf Version 6.2 (vgl. [JHipster release v6.2.0](https://www.jhipster.tech/2019/08/01/jhipster-release-6.2.0.html))
+- Auswahl der CFA-Algorithmen und -Level im Rahmen der Pointer-Analysen sind jetzt möglich.
 ## Version 0.9.2
 - Die Quelldatei des System-Services wird jetzt in der Detailansicht mit angezeigt.
 - Es wurde ein Diff-Editor hinzugefügt.
