@@ -134,7 +134,7 @@ Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services
 
 bereitgestellt, sodass im Rahmen der Evaluation keine weiteren Schritte notwendig sind.
 
-Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann in den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" (~/android-resources/) festgelegt. Sofern der angegebene Pfad mit einer Tilde beginnt, wird dieser als relativer Pfad interpretiert. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [Codenames, Tags, and Build Numbers | Android Open Source Project](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und `android.jar`-Dateien abgelegt sein.
+Der Dateipfad, in dem nach den Java-Quelldateien und der android.jar-Datei gesucht wird, kann in den Optionen (Settings) unter dem Key `Android_Source_Path` bzw. `Android_Platform_Path` eingestellt werden und ist standardmäßig relativ zum Ausführungspfad auf den Order "android-resources" festgelegt. Die Angabe von absoluten Dateipfaden ist ebenfalls möglich. In dem festgelegten Pfad wird zur Laufzeit nach allen "android-XX"-Ordnern gesucht, wobei XX hier das entsprechende API-Level repräsentiert (z.b. android-28 entspricht Android 9, android-17 entspricht Android 4.4)(vgl. [Codenames, Tags, and Build Numbers | Android Open Source Project](https://source.android.com/setup/start/build-numbers)). Innerhalb dieser Ordner sollten die jeweiligen Java-Quelldateien und `android.jar`-Dateien abgelegt sein.
 
 ## Bereitstellung weiterer Android-Versionen (optional)
 Neben API-Level 28 können weitere Android-Versionen analysiert werden, indem die dafür benötigten Dateien angelegt werden. Für die Rekonstruktion des originalen Quellcodes aus einem Slice werden die LineNumberTable-Attribute, d.h. die Zuordnung der Zeilennummern im Binärcode zu den Zeilennummern im originalen Quellcode, benötigt. Diese sind in den fertig kompilierten Android-Images allerdings nicht mehr vorhanden, sodass die Binärdateien im Rahmen des Android-Buildprozesses extrahiert werden müssen. Dabei werden die kompilierten .class-Dateien als Zwischenerzeugnisse abgelegt.
@@ -196,6 +196,12 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 # Changelog
+## Version 0.9.4 (benötigt DB-Reset)
+- Generelle Programm-Einstellungen (Settings) und Slicing-Parameter (Slicer Options und CFA Options) können nicht mehr vom Endbenutzer erstellt oder gelöscht werden, da diese Funktionen keinen Sinn machen.
+- Generelle Programm-Einstellungen (Settings) haben jetzt ein Beschreibungsfeld.
+- Relative Pfade (für Quelldateien und die android.jar-Datei) werden jetzt ohne Tilde angegeben.
+- Beim Aufruf des Android-Slicers mit "-h" oder "--help" wird nun ein Hinweis bzgl. der verfügbaren Parameter gegeben.
+
 ## Version 0.9.3
 - Update der JHipster Version auf 6.2 (vgl. [JHipster release v6.2.0](https://www.jhipster.tech/2019/08/01/jhipster-release-6.2.0.html))
 - Auswahl der CFA-Algorithmen und -Level im Rahmen der Pointer-Analysen sind jetzt möglich (Achtung: Aufgrund des veränderten Datenbankmodells muss die android_slicer_db im MongoDB-Server gelöscht werden.)
