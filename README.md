@@ -201,6 +201,7 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 - Generelle Programm-Einstellungen (Settings) haben jetzt ein Beschreibungsfeld.
 - Relative Pfade (für Quelldateien und die android.jar-Datei) werden jetzt ohne Tilde angegeben.
 - Beim Aufruf des Android-Slicers mit "-h" oder "--help" wird nun ein Hinweis bzgl. der verfügbaren Parameter gegeben.
+- Sofern nur eine Android-API Version zur Verfügung steht, wird diese jetzt vorausgewählt.
 
 ## Version 0.9.3
 - Update der JHipster Version auf 6.2 (vgl. [JHipster release v6.2.0](https://www.jhipster.tech/2019/08/01/jhipster-release-6.2.0.html))
