@@ -87,7 +87,7 @@ Nachdem die Anwendung erfolgreich gestartet wurde, kann die graphische Benutzero
 
     http://localhost:8080
 
-aufgerufen werden. Eine Anmeldung ist mit dem Benutzerkonto `admin:admin` möglich. Das Benutzerkonto dient dabei keinen sicherheitskritischen Aspekten, sondern lediglich dem Session-Management und als Platzhalter für eine eventuell später ausgebaute Benutzerverwaltung. Daher wurde auf das Anlegen von personenbezogenen Benutzerkonten mit ausreichend starken Passwörtern verzichtet.
+aufgerufen werden.
 
 ## Slice Erstellen
 ![Slice Erstellen](images/ansicht-slice-erstellen.png?raw=true "Slice Erstellen")
@@ -196,6 +196,16 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 # Changelog
+## Version 0.9.5
+- Seed Statements können jetzt auch als reguläre Ausdrücke eingegeben werden (z.B. check.* oder enforce.*). Unzulässige Ausdrücke werden entfernt, was mit einer Warnung im Log angezeigt wird. Die Ausdrücke können u.a. [hier](https://www.freeformatter.com/java-regex-tester.html) getestet werden.
+- Die Pseudo-Anmeldung mittels admin:admin wurde entfernt. Das Frontend sowie die REST-API benötigen jetzt keine Authentifizierung mehr.
+- Ein Fehler wurde behoben, welcher Zeilen, die mit "|" beginnen als Kommentar erkannt hat und diese daher mehrfach im Slice ausgegeben wurden. Zum Beispiel:
+    ```
+	if (PowerManager.REBOOT_RECOVERY.equals(reason)
+         || PowerManager.REBOOT_RECOVERY_UPDATE.equals(reason)) {
+         || PowerManager.REBOOT_RECOVERY_UPDATE.equals(reason)) {
+    ```
+
 ## Version 0.9.4 (benötigt DB-Reset)
 - Generelle Programm-Einstellungen (Settings) und Slicing-Parameter (Slicer Options und CFA Options) können nicht mehr vom Endbenutzer erstellt oder gelöscht werden, da diese Funktionen keinen Sinn machen.
 - Generelle Programm-Einstellungen (Settings) haben jetzt ein Beschreibungsfeld.
