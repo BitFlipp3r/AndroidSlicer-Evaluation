@@ -196,6 +196,13 @@ von der Build-Machine herunterzuladen. Danach sollten die Inhalte des Archivs `a
 ![Android-Ressourcen Dateistruktur](images/android_resources.PNG?raw=true "Android-Ressourcen Dateistruktur")
 
 # Changelog
+## Version 0.9.6 (benötigt DB-Reset)
+- Entry Points und Seed Statements sind nun leichter lesbar dargestellt.
+- Sofern die Analyseergebnisse mehrere Klassen enthalten, werden diese nun in separaten Tabs dargestellt, um die Slices übersichtlicher zu gestalten.
+- Klassen- und Paketdeklarationen werden jetzt immer in den Slice mit aufgenommen.
+- Die Slices werden nun zusätzlich als Java-Datei gespeichert, um diese ggf. für weitere Analysen in einer vollwertigen IDE zu öffnen. Die (De)Aktivierung dieser Option sowie der Speicherort kann in den Settings spezifiziert werden. Standardmäßig ist die Ausgabe auf den Ordner `output`relativ zum Ausführungsverzeichnis festgelegt.
+- Die Anzeige der Slices wird nun mit einem Overlay blockiert, sofern noch Daten geladen werden oder Brechnungen durch den Diff-Editor stattfinden.
+- Fehler behoben, welcher immer die CFA-Optionen überschrieben und immer die 0-1-CFA ausgewählt hat.
 ## Version 0.9.5
 - Seed Statements können jetzt auch als reguläre Ausdrücke eingegeben werden (z.B. check.* oder enforce.*). Unzulässige Ausdrücke werden entfernt, was mit einer Warnung im Log angezeigt wird. Die Ausdrücke können u.a. [hier](https://www.freeformatter.com/java-regex-tester.html) getestet werden.
 - Die Pseudo-Anmeldung mittels admin:admin wurde entfernt. Das Frontend sowie die REST-API benötigen jetzt keine Authentifizierung mehr.
