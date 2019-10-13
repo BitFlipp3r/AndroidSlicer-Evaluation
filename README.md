@@ -125,6 +125,10 @@ Die Detailansicht gibt eine Übersicht über die gewählten Slicing-Parameter un
 
 Der Slice kann dabei mit dem originalen Quelltext verglichen werden. Eine Diff-Ansicht der beiden Code-Dateien kann über den `Show Diff`-Button aktiviert werden.
 
+Zur Weiterverarbeitung der Slicing-Ergebnisse mit anderen Tools oder einer IDE-Nutzung stehen verschiedene Optionen zur Verfügung. Zunächst wird der Slice-Code im Ausführungsverzeichnis des Android-Slicers unter dem Verzeichnis `output` gespeichert. Sofern der Benutzer keinen Zugriff auf das Host-System des Android-Slicers hat, kann der Slice-Code weiterhin über die `Download`-Schaltfläche in der Detailansicht im Browser heruntergeladen werden. Zusätzlich bietet die `Open in DIE`-Funktion die Möglichkeit einen VS Code-Server zu starten. Dafür muss im Ausführungsverzeichnis der Ordner `code-server` vorhanden sein. Dort sucht der Android-Slicer, abhängig vom Betriebssystem, in den Unterordnern `win`, `lin` oder `mac` nach der Datei `code-server`.
+
+Der Pfad zu den `code-server`-Dateien sowie der Port der Server-Instanz lassen sich in den Einstellungen anpassen. Dabei sollte beachtet werden, dass die kopierten oder heruntergeladen `code-server`-Dateien ggf. noch zusätzliche Ausführungsrechte auf dem Serversystem benötigen. Unter Linux z.B. mit Hilfe des Kommandos `chmod +x code-server`.
+
 # Einbindung der Android-Ressourcen
 Der Android-Slicer benötigt sowohl zur Auswahl und Anzeige der Android-Services als auch zur Rekonstruktion des Quellcodes während des Slicing-Prozesses die Java-Quelldateien der entsprechenden Klassen. Die Berechnung der Slices mittels WALA erfolgt dagegen auf Binärebene, sodass zusätzlich die kompilierten .class-Dateien innerhalb einer `android.jar`-Datei bereitgestellt werden müssen.  Diese sind für das API-Level 28 (Android 9) im Ordner 
 
