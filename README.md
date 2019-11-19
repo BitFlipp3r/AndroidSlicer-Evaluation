@@ -163,10 +163,13 @@ und die .class-Dateien der Interfaces und .Stub-Klassen unter
 
 erhalten werden. Um die Java-Archive zu kombinieren und eine `android.jar`-Datei für den Android-Slicer zu erstellen, können z.B. die folgenden Befehle genutzt werden:
 
+*Hinweis: Ab dem API Level 29 (Android 10) kommt es bei der Benutzung des Bytecodes unter `.../framework/android_common/jarjar/framework.jar` zu einem "bad method bytecode"-Fehler. Daher muss stattdessen das Jar-Archiv unter `.../framework-minus-apex/android_common/jarjar/framework-minus-apex.jar` genutzt werden.*
+
 ```
 $ mkdir android_jars
 $ (cd android_jars; unzip -uo ../out/target/common/obj/JAVA_LIBRARIES/services_intermediates/classes.jar)
-$ (cd android_jars; unzip -uo ../out/soong/.intermediates/frameworks/base/framework/android_common/jarjar/framework.jar)
+API 28: $ (cd android_jars; unzip -uo ../out/soong/.intermediates/frameworks/base/framework/android_common/jarjar/framework.jar)
+API 29: $ (cd android_jars; unzip -uo ../out/soong/.intermediates/frameworks/base/framework-minus-apex/android_common/jarjar/framework-minus-apex.jar)
 $ jar -cvf android.jar -C android_jars .
 ```
 
@@ -190,7 +193,7 @@ zu finden. Weiterhin sind die AIDL-Spezifikationen, welche zur Anzeige der öffe
 Es empfiehlt sich daher, alle Ordner in einem kombinierten Zip-Archiv mittels
 
 ```
-(cd frameworks/base/services/core/java/; zip -r ../../../../../android-sources.zip .); (cd frameworks/base/services/restrictions/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/accessibility/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/devicepolicy/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/autofill/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/voiceinteraction/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/backup/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/print/java/; zip -ur ../../../../../android-sources.zip. ); (cd frameworks/base/core/java/; zip -ur ../../../../android-sources.zip .); (cd frameworks/base/location/java/; zip -ur ../../../../android-sources.zip .); (cd system/bt/binder/android/bluetooth/; zip -ur ../../../android-sources.zip .)
+(cd frameworks/base/services/core/java/; zip -r ../../../../../android-sources.zip .); (cd frameworks/base/services/restrictions/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/accessibility/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/devicepolicy/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/autofill/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/voiceinteraction/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/backup/java/; zip -ur ../../../../../android-sources.zip .); (cd frameworks/base/services/print/java/; zip -ur ../../../../../android-sources.zip. ); (cd frameworks/base/core/java/; zip -ur ../../../../android-sources.zip .); (cd frameworks/base/location/java/; zip -ur ../../../../android-sources.zip .); (cd system/bt/binder/; zip -ur ../../../android-sources.zip .)
 ```
 
 von der Build-Maschine  herunterzuladen. Danach sollten die Inhalte des Archivs `android-sources.zip` sowie das `android.jar`-Archiv in dem Ordner "android-XX" abgelegt werden, sodass sich die folgende Dateistruktur ergibt:
